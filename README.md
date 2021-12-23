@@ -1,7 +1,7 @@
 # Console-Platformer-Game-Made-in-Assembly-Irvine32-
 Name says it all yo.
 Doesnt have Graphics since i dont know how to do that.
-You can move around and jump (jumps pretty wonky tho lol.
+You can move around and jump (jumps pretty wonky tho lol).
 Theres Gravity.
 Theres Platforms that descend.
 Theres Collisions with platforms , coins and an enemy.
