@@ -13,7 +13,7 @@ Platform ENDS
 
 
 .data
-	numPlatformsMax = 15 ; There can only be <= 6 platforms at one time
+	numPlatformsMax = 35 ; There can only be <= 6 platforms at one time
 	inputChar BYTE ?
 	player Point <40, 27>
 	enemy Point<40,12>
@@ -35,8 +35,8 @@ Platform ENDS
 	enemyMode byte 0
 	quit byte 0
 	gameOverbool BYTE 0
-	enemyspeedCoolDownOriginal DWORD 1000
-	enemyspeedCoolDown DWORD 1200
+	enemyspeedCoolDownOriginal DWORD 1100
+	enemyspeedCoolDown DWORD 1100
 
 .code
 	main PROC
@@ -134,11 +134,11 @@ Platform ENDS
 		switchenemymode0:
 		mov enemymode,1
 		next:
-		cmp enemyspeedcooldown,200
+		cmp enemyspeedcooldown,185
 		je keepCDsame
 
 		mov eax,enemyspeedCoolDown
-		sub eax,200
+		sub eax,75
 		mov enemyspeedCoolDown,eax
 		keepCDsame:
 		inc score
@@ -151,8 +151,9 @@ Platform ENDS
 		call RandomRange
 		add eax,50
 		mov coin.x,al
-		mov eax,25
+		mov eax,24
 		call randomrange
+		add eax,1
 		mov coin.y,al
 		ret
 	CreateRandomCoin ENDP
@@ -171,7 +172,8 @@ Platform ENDS
 
 	Update PROC
 		call HandleEvents
-		
+		call enemyCollision
+		call CoinCollision
 
 		cmp isJumping, 0
 		je _
@@ -215,7 +217,7 @@ Platform ENDS
 			jmp next
 			checkxLesser:
 			mov al,platforms[esi * TYPE platform].pos.x
-			dec al
+			sub al,2
 			cmp al,player.x
 			jl _ng
 
@@ -257,8 +259,6 @@ Platform ENDS
 	Inertia ENDP
 
 	HandleEvents PROC
-		call enemyCollision
-		call CoinCollision
 		call ReadKey
 		jnz KeyEntered 
 		ret	;if no key is entered it returns
@@ -272,7 +272,7 @@ Platform ENDS
 				cmp isJumping, 1	; cant jump if already jumping
 				je break
 
-				cmp jumpClock, 200 ; can jump every 200 cycles
+				cmp jumpClock, 750 ; can jump every 200 cycles
 				jl break
 				mov jumpClock, 0
 				mov isJumping, 1
@@ -670,7 +670,7 @@ Platform ENDS
 
 	PlatformGenerator PROC uses eax
 		movzx eax, numberOfPlatforms
-		cmp platformGenerationClock, 3000  ; can generate a platform every 4000 iterations
+		cmp platformGenerationClock, 1000  ; can generate a platform every 4000 iterations
 		jl break
 
 		cmp numberOfPlatforms, numPlatformsmax
@@ -688,7 +688,7 @@ Platform ENDS
 	PlatformGenerator ENDP
 
 	PlatformMovement PROC uses ebx esi eax
-		cmp platformMovementClock, 1500  ; Move platforms once every 4000 cycles
+		cmp platformMovementClock, 500  ; Move platforms once every 4000 cycles
 		jl cont
 		mov platformMovementClock, 0
 		mov esi, 0
