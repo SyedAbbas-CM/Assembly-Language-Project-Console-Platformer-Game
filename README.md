@@ -1,5 +1,6 @@
 # Console-Platformer-Game-Made-in-Assembly-Irvine32-
 Name says it all yo.  
+You can run the exe to play the game but for running it .....   
 You will need to download and set up Irvine32 to run this.  
 Doesnt have Graphics since i dont know how to do that.  
 You can move around and jump (jumps pretty wonky tho lol).  
